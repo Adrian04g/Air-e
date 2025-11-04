@@ -27,12 +27,19 @@ const ContratosList = () => {
         contratosService.getAll(),
         cableoperadoresService.getAll(),
       ])
-      // Asegurar que los datos son arrays
-      setContratos(Array.isArray(contratosData) ? contratosData : [])
-      setCableoperadores(Array.isArray(cableoperadoresData) ? cableoperadoresData : [])
+      console.log('Contratos cargados:', contratosData)
+      console.log('Cable-operadores cargados:', cableoperadoresData)
+      
+      // Asegurarse de que ambos sean arrays
+      const contratosArray = Array.isArray(contratosData) ? contratosData : []
+      const cableoperadoresArray = Array.isArray(cableoperadoresData) ? cableoperadoresData : []
+      
+      setContratos(contratosArray)
+      setCableoperadores(cableoperadoresArray)
+      setCableoperadores(cableoperadoresArray)
     } catch (error) {
-      console.error('Error al cargar datos:', error)
-      toast.error('Error al cargar datos')
+      console.error('Error al cargar datos:', error.response?.data || error.message)
+      toast.error(`Error al cargar datos: ${error.response?.data?.detail || error.message}`)
       setContratos([])
       setCableoperadores([])
     } finally {
@@ -52,15 +59,24 @@ const ContratosList = () => {
     }
   }
 
+  console.log('Estado actual de contratos:', contratos)
+  
   const filteredContratos = contratos.filter((contrato) => {
+    console.log('Procesando contrato:', contrato)
+    
     const matchesSearch =
-      contrato.cableoperador?.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contrato.cableoperador?.nombre_largo?.toLowerCase().includes(searchTerm.toLowerCase())
+      String(contrato.cableoperador?.nombre || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(contrato.cableoperador?.nombre_largo || '').toLowerCase().includes(searchTerm.toLowerCase())
+    
     const matchesEstado = !filterEstado || contrato.estado_contrato === filterEstado
+    
     const matchesCableoperador =
       !filterCableoperador || contrato.cableoperador?.id === parseInt(filterCableoperador)
 
-    return matchesSearch && matchesEstado && matchesCableoperador
+    const result = matchesSearch && matchesEstado && matchesCableoperador
+    console.log('Resultado del filtro:', { matchesSearch, matchesEstado, matchesCableoperador, result })
+    
+    return result
   })
 
   if (loading) {

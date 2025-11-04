@@ -20,8 +20,25 @@ const ContratosDetail = () => {
     try {
       setLoading(true)
       const data = await contratosService.getById(id)
-      setContrato(data)
+      
+      // Si tenemos un ID de cableoperador, obtener sus detalles
+      if (data.cableoperador) {
+        try {
+          const cableoperadorData = await cableoperadoresService.getById(data.cableoperador)
+          // Combinar los datos del contrato con los detalles del cable-operador
+          setContrato({
+            ...data,
+            cableoperador: cableoperadorData
+          })
+        } catch (error) {
+          console.error('Error al cargar detalles del cable-operador:', error)
+          setContrato(data)
+        }
+      } else {
+        setContrato(data)
+      }
     } catch (error) {
+      console.error('Error al cargar contrato:', error)
       toast.error('Error al cargar contrato')
       navigate('/contratos')
     } finally {

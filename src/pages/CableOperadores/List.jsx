@@ -20,11 +20,19 @@ const CableOperadoresList = () => {
     try {
       setLoading(true)
       const data = await cableoperadoresService.getAll()
+      console.log('Respuesta del servidor:', data)
       // Asegurar que data es un array
-      setCableoperadores(Array.isArray(data) ? data : [])
+      if (!Array.isArray(data)) {
+        console.log('La respuesta no es un array:', typeof data, data)
+        // Si data.results existe y es un array, usar eso
+        const arrayData = data?.results || []
+        setCableoperadores(arrayData)
+      } else {
+        setCableoperadores(data)
+      }
     } catch (error) {
-      console.error('Error al cargar cable-operadores:', error)
-      toast.error('Error al cargar cable-operadores')
+      console.error('Error al cargar cable-operadores:', error.response?.data || error.message)
+      toast.error(`Error al cargar cable-operadores: ${error.response?.data?.detail || error.message}`)
       setCableoperadores([])
     } finally {
       setLoading(false)
