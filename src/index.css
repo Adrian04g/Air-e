@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f7f9fb;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Estilos para el logo en el Sidebar */
+#sidebar-logo {
+  height: 160px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  display: block !important;
+  min-height: 160px !important;
+}
+
+/* Contenedor del logo en Sidebar */
+aside .bg-white.rounded-lg.shadow-lg {
+  min-height: 200px !important;
+  padding: 20px !important;
+}
+
