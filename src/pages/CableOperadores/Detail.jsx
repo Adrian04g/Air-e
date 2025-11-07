@@ -13,7 +13,12 @@ const CableOperadoresDetail = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [cableoperador, setCableoperador] = useState(null)
-  const [notificaciones, setNotificaciones] = useState([])
+  const [notificaciones, setNotificaciones] = useState({
+    count: 0,
+    next: null,
+    previous: null,
+    results: [],
+  })
 
   useEffect(() => {
     loadCableoperador()
@@ -50,7 +55,7 @@ const CableOperadoresDetail = () => {
         const responseData = await cableoperadoresService.getNotificaciones(id)
         
         // CORRECCIÓN: Usar responseData.results
-        setNotificaciones(responseData.results) 
+        setNotificaciones(responseData) 
         
       } catch (error) {
         toast.error('Error al cargar notificaciones')
@@ -134,7 +139,7 @@ const CableOperadoresDetail = () => {
           toast.success('Notificación creada exitosamente');
           // Recargar notificaciones
           const responseData = await cableoperadoresService.getNotificaciones(id);
-          setNotificaciones(responseData.results);
+          setNotificaciones(responseData);
           e.target.reset();
         } catch (error) {
             // Mostrar detalles del error para depuración
@@ -198,13 +203,12 @@ const CableOperadoresDetail = () => {
     </div>
 
     {/* Lista de notificaciones */}
-    <h3 className="text-xl font-bold text-gray-800 border-b pb-2">Historial de Notificaciones ({notificaciones.length})</h3>
-    
-    {notificaciones.length === 0 ? (
+    <h3 className="text-xl font-bold text-gray-800 border-b pb-2">Historial de Notificaciones ({notificaciones.count})</h3>
+    {notificaciones.count === 0 ? (
       <p className="text-gray-500">No hay notificaciones registradas para este cableoperador.</p>
     ) : (
       <div className="space-y-4">
-          {notificaciones.map((notificacion) => (
+          {notificaciones.results.map(notificacion => (
             <div key={notificacion.id} className="border p-4 rounded-lg bg-gray-50">
               <div className="flex justify-between items-start">
                 <p className="text-lg font-semibold text-primary">

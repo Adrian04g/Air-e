@@ -137,10 +137,10 @@ const Dashboard = () => {
                   <Cable className="w-6 h-6 text-gray-400 group-hover:text-blue-500 mr-3" />
                   <div>
                     <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 block">
-                      Nuevo Cable-operador
+                      Nuevo Cableoperador
                     </span>
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      Registrar nuevo cable-operador
+                      Registrar nuevo cableoperador
                     </span>
                   </div>
                 </div>
@@ -174,7 +174,7 @@ const Dashboard = () => {
             <Activity className="w-5 h-5 text-blue-500" />
           </div>
           <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Sistema de gestión de cable-operadores y contratos de AIR-E
+            Sistema de gestión de cableoperadores y contratos de AIR-E
           </p>
           <div className="space-y-2">
             <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
