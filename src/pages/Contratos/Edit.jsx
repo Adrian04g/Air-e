@@ -76,7 +76,7 @@ const ContratosEdit = () => {
         cableoperadoresService.getAllAllPages(),
       ])
       
-      console.log('Datos del contrato cargado:', contratoData)
+      //console.log('Datos del contrato cargado:', contratoData)
       
       const items = Array.isArray(cableoperadoresData?.results) 
         ? cableoperadoresData.results 
@@ -138,7 +138,7 @@ const ContratosEdit = () => {
         },
       })
     } catch (error) {
-      console.error('Error al cargar contrato:', error)
+      //console.error('Error al cargar contrato:', error)
       toast.error('Error al cargar contrato')
       navigate('/contratos')
     } finally {

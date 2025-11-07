@@ -66,7 +66,7 @@ const ContratosList = () => {
         setPageSize(contratosArray.length)
       }
     } catch (error) {
-      console.error('Error al cargar datos:', error.response?.data || error.message)
+      //console.error('Error al cargar datos:', error.response?.data || error.message)
       toast.error(`Error al cargar datos: ${error.response?.data?.detail || error.message}`)
       setContratos([])
       setCableoperadores([])
@@ -99,10 +99,10 @@ const ContratosList = () => {
     }
   }
 
-  console.log('Estado actual de contratos:', contratos)
+  //console.log('Estado actual de contratos:', contratos)
   
   const filteredContratos = contratos.filter((contrato) => {
-    console.log('Procesando contrato:', contrato)
+    //console.log('Procesando contrato:', contrato)
     
     const matchesSearch =
       String(contrato.cableoperador?.nombre || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,7 +114,7 @@ const ContratosList = () => {
       !filterCableoperador || contrato.cableoperador?.id === parseInt(filterCableoperador)
 
     const result = matchesSearch && matchesEstado && matchesCableoperador
-    console.log('Resultado del filtro:', { matchesSearch, matchesEstado, matchesCableoperador, result })
+    //console.log('Resultado del filtro:', { matchesSearch, matchesEstado, matchesCableoperador, result })
     
     return result
   })

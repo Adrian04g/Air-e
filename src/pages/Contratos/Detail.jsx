@@ -31,14 +31,14 @@ const ContratosDetail = () => {
             cableoperador: cableoperadorData
           })
         } catch (error) {
-          console.error('Error al cargar detalles del cable-operador:', error)
+          //console.error('Error al cargar detalles del cableoperador:', error)
           setContrato(data)
         }
       } else {
         setContrato(data)
       }
     } catch (error) {
-      console.error('Error al cargar contrato:', error)
+      //console.error('Error al cargar contrato:', error)
       toast.error('Error al cargar contrato')
       navigate('/contratos')
     } finally {

@@ -28,7 +28,7 @@ const CableOperadoresList = () => {
       // Usar búsqueda del servidor cuando haya término de búsqueda (opción A)
       if (searchTerm && searchTerm.trim() !== '') {
         const resp = await cableoperadoresService.getAllFull({ page: pageToLoad, search: searchTerm })
-        console.log('Cableoperadores (búsqueda por servidor):', resp)
+        //console.log('Cableoperadores (búsqueda por servidor):', resp)
         const items = resp?.results || []
         setCableoperadores(items)
         setTotalCount(resp?.count || items.length)
@@ -36,7 +36,7 @@ const CableOperadoresList = () => {
       } else {
         // Cargar página específica desde el servidor
         const resp = await cableoperadoresService.getAllFull({ page: pageToLoad })
-        console.log('Respuesta completa de cableoperadores:', resp)
+        //console.log('Respuesta completa de cableoperadores:', resp)
         const items = resp?.results || []
         setCableoperadores(items)
         setTotalCount(resp?.count || items.length)

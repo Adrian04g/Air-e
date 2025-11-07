@@ -49,7 +49,7 @@ const CableOperadoresNew = () => {
         return
       }
 
-      console.log('Usuario actual:', user)
+      //console.log('Usuario actual:', user)
       // Convertir campos numéricos
       const dataToSend = {
         ...formData,
@@ -63,7 +63,7 @@ const CableOperadoresNew = () => {
         ejecutiva_id: formData.ejecutiva_id, // Mantener el ID de ejecutiva sin transformar
       }
 
-      console.log('Datos a enviar:', dataToSend)
+      //console.log('Datos a enviar:', dataToSend)
       await cableoperadoresService.create(dataToSend)
       toast.success('Cableoperador creado exitosamente')
       navigate('/cableoperadores')

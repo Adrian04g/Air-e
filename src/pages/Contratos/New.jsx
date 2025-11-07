@@ -230,12 +230,12 @@ const nuevoEstado = determinarEstado(formData.inicio_vigencia, formData.fin_vige
         ...nestedPayload,
       }
 
-      console.log('Payload contrato create:', dataToSend)
+      //console.log('Payload contrato create:', dataToSend)
       await contratosService.create(dataToSend)
       toast.success('Contrato creado exitosamente')
       navigate('/contratos')
     } catch (error) {
-      console.error('Error creating contrato:', error.response?.data || error)
+      //console.error('Error creating contrato:', error.response?.data || error)
       const detail = error.response?.data || error.message || 'Error desconocido'
       toast.error(`Error al crear contrato: ${JSON.stringify(detail)}`)
     } finally {

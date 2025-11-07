@@ -22,10 +22,10 @@ const Dashboard = () => {
     try {
       setLoading(true)
       const data = await dashboardService.getStats()
-      console.log('Dashboard stats data:', data)
+      //console.log('Dashboard stats data:', data)
       setStats(data)
     } catch (error) {
-      console.error('Error al cargar estadísticas:', error)
+      //console.error('Error al cargar estadísticas:', error)
       toast.error('Error al cargar estadísticas. Verifica que el backend esté corriendo.')
       // Establecer valores por defecto si hay error
       setStats({
