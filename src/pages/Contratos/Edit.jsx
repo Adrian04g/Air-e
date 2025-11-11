@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import contratosService from '../../services/contratosService'
@@ -7,7 +7,8 @@ import Input from '../../components/UI/Input'
 import Select from '../../components/UI/Select'
 import Button from '../../components/UI/Button'
 import Loading from '../../components/UI/Loading'
-import { ESTADOS_CONTRATO } from '../../utils/constants'
+import { ChevronDown } from 'lucide-react'
+import { ESTADOS_CONTRATO,VIGENCIA_AMPARO_POLIZA, MONTO_ASEGURADO_POLIZA_RCE, MONTO_ASEGURADO_POLIZA_CUMPLIMIENTO  } from '../../utils/constants'
 import { formatDateForInput } from '../../utils/formatters'
 
 const ContratosEdit = () => {
@@ -16,6 +17,12 @@ const ContratosEdit = () => {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [cableoperadores, setCableoperadores] = useState([])
+  const [openSections, setOpenSections] = useState({
+    nap: false,
+    cable: false,
+    caja_empalme: false,
+    reserva: false,
+  })
   const [formData, setFormData] = useState({
     cableoperador: '',
     estado_contrato: 'Vigente',
@@ -76,7 +83,7 @@ const ContratosEdit = () => {
         cableoperadoresService.getAllAllPages(),
       ])
       
-      console.log('Datos del contrato cargado:', contratoData)
+      //console.log('Datos del contrato cargado:', contratoData)
       
       const items = Array.isArray(cableoperadoresData?.results) 
         ? cableoperadoresData.results 
@@ -138,7 +145,7 @@ const ContratosEdit = () => {
         },
       })
     } catch (error) {
-      console.error('Error al cargar contrato:', error)
+      //console.error('Error al cargar contrato:', error)
       toast.error('Error al cargar contrato')
       navigate('/contratos')
     } finally {
@@ -160,6 +167,52 @@ const ContratosEdit = () => {
       },
     })
   }
+
+  // Lógica para determinar el estado del contrato y calcular fin_vigencia automáticamente
+  const determinarEstado = useCallback((inicio, fin) => {
+    const hoy = new Date()
+    const hoyString = hoy.toISOString().split('T')[0]
+    const fechaActual = new Date(hoyString + 'T00:00:00')
+
+    const fechaInicio = inicio ? new Date(inicio + 'T00:00:00') : null
+    const fechaFin = fin ? new Date(fin + 'T00:00:00') : null
+
+    if (!fechaInicio || !fechaFin) return ''
+
+    // Si la fecha de inicio es futura, consideramos 'Vigente' (o ajustar a 'Pendiente' si aplica)
+    if (fechaInicio > fechaActual) return 'Vigente'
+
+    if (fechaActual < fechaFin) return 'Vigente'
+
+    return 'Vencido'
+  }, [])
+
+  useEffect(() => {
+    const inicioVigencia = formData.inicio_vigencia
+    const duracionAnos = Number(formData.duracion_anos)
+
+    if (inicioVigencia && !isNaN(duracionAnos) && duracionAnos >= 0) {
+      const fechaInicio = new Date(inicioVigencia + 'T00:00:00')
+      if (!isNaN(fechaInicio.getTime())) {
+        const fechaFin = new Date(fechaInicio)
+        fechaFin.setFullYear(fechaFin.getFullYear() + duracionAnos)
+
+        const year = fechaFin.getFullYear()
+        const month = String(fechaFin.getMonth() + 1).padStart(2, '0')
+        const day = String(fechaFin.getDate()).padStart(2, '0')
+        const finVigenciaCalculada = `${year}-${month}-${day}`
+
+        if (formData.fin_vigencia !== finVigenciaCalculada) {
+          setFormData(prevData => ({ ...prevData, fin_vigencia: finVigenciaCalculada }))
+        }
+      }
+    }
+
+    const nuevoEstado = determinarEstado(formData.inicio_vigencia, formData.fin_vigencia)
+    if (formData.estado_contrato !== nuevoEstado) {
+      setFormData(prevData => ({ ...prevData, estado_contrato: nuevoEstado }))
+    }
+  }, [formData.inicio_vigencia, formData.fin_vigencia, formData.duracion_anos, formData.estado_contrato, determinarEstado])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -212,6 +265,13 @@ const ContratosEdit = () => {
     }
   }
 
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }))
+  }
+
   if (loading) {
     return <Loading fullScreen />
   }
@@ -222,7 +282,7 @@ const ContratosEdit = () => {
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Select
-            label="Cable-operador"
+            label="Cableoperador"
             name="cableoperador"
             value={formData.cableoperador}
             onChange={handleChange}
@@ -290,64 +350,256 @@ const ContratosEdit = () => {
             ]}
             required
           />
+          <Input
+            label="Tomador"
+            name="tomador"
+            type="text"
+            value={formData.tomador}
+            onChange={handleChange}
+          />
+          <Input
+            label="Aseguradora"
+            name="aseguradora"
+            type="text"
+            value={formData.aseguradora}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fecha preliquidacion"
+            name="fecha_preliquidacion"
+            type="date"
+            value={formData.fecha_preliquidacion}
+            onChange={handleChange}
+          />
+        </div>
+        {/*Secciones de la poliza*/}
+        <h3 className="text-lg font-semibold">Campos de la Póliza de cumplimiento</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Campos de la póliza de cumplimiento */}
+          <Input
+            label="Número de poliza de cumplimiento"
+            name="numero_poliza_cumplimiento"
+            type="number"
+            step="0.01"
+            value={formData.numero_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Input
+            label="Inicio de vigencia de poliza de cumplimiento"
+            name="inicio_vigencia_poliza_cumplimiento"
+            type="date"
+            value={formData.inicio_vigencia_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fin de vigencia de poliza de cumplimiento"
+            name="fin_vigencia_poliza_cumplimiento"
+            type="date"
+            value={formData.fin_vigencia_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Select
+            label="Vigencia de amparo de la póliza"
+            name="vigencia_amparo_poliza_cumplimiento"
+            value={formData.vigencia_amparo_poliza_cumplimiento}
+            onChange={handleChange}
+            options={VIGENCIA_AMPARO_POLIZA}
+          />
+          <Input
+            label="Inicio de vigencia de amparo de la póliza"
+            name="inicio_vigencia_amparo_poliza_cumplimiento"
+            type="date"
+            value={formData.inicio_vigencia_amparo_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fin de vigencia de amparo de la póliza"
+            name="fin_vigencia_amparo_poliza_cumplimiento"
+            type="date"
+            value={formData.fin_vigencia_amparo_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Select
+            label="Monto asegurado de la póliza"
+            name="monto_asegurado_poliza_cumplimiento"
+            value={formData.monto_asegurado_poliza_cumplimiento}
+            onChange={handleChange}
+            options={MONTO_ASEGURADO_POLIZA_CUMPLIMIENTO}
+          />
+          <Input
+            label="Valor Monto asegurado de la póliza"
+            name="valor_monto_asegurado_poliza_cumplimiento"
+            type="number"
+            step="0.01"
+            value={formData.valor_monto_asegurado_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Input
+            label="Valor asegurado de la póliza"
+            name="valor_asegurado_poliza_cumplimiento"
+            type="number"
+            step="0.01"
+            value={formData.valor_asegurado_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Input
+            label="Inicio amparo de la póliza"
+            name="inicio_amparo_poliza_cumplimiento"
+            type="date"
+            value={formData.inicio_amparo_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fin amparo de la póliza"
+            name="fin_amparo_poliza_cumplimiento"
+            type="date"
+            value={formData.fin_amparo_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+          <Input
+            label="Expedicion de la póliza"
+            name="expedicion_poliza_cumplimiento"
+            type="date"
+            value={formData.expedicion_poliza_cumplimiento}
+            onChange={handleChange}
+          />
+        </div>
+        <h3 className="text-lg font-semibold">Campos de la Póliza de RCE</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Campos de la póliza de RCE */}
+          <Input
+            label="Número de poliza de RCE"
+            name="numero_poliza_rce"
+            type="number"
+            step="0.01"
+            value={formData.numero_poliza_rce}
+            onChange={handleChange}
+          />
+          <Input
+            label="Inicio de vigencia de poliza de rce"
+            name="inicio_vigencia_poliza_rce"
+            type="date"
+            value={formData.inicio_vigencia_poliza_rce}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fin de vigencia de poliza de rce"
+            name="fin_vigencia_poliza_rce"
+            type="date"
+            value={formData.fin_vigencia_poliza_rce}
+            onChange={handleChange}
+          />
+          <Select
+            label="Vigencia de amparo de la rce"
+            name="vigencia_amparo_poliza_rce"
+            value={formData.vigencia_amparo_poliza_rce}
+            onChange={handleChange}
+            options={VIGENCIA_AMPARO_POLIZA}
+          />
+          <Input
+            label="Inicio de vigencia de amparo de la póliza"
+            name="inicio_vigencia_amparo_poliza_rce"
+            type="date"
+            value={formData.inicio_vigencia_amparo_poliza_rce}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fin de vigencia de amparo de la póliza"
+            name="fin_vigencia_amparo_poliza_rce"
+            type="date"
+            value={formData.fin_vigencia_amparo_poliza_rce}
+            onChange={handleChange}
+          />
+          <Select
+            label="Monto asegurado de la póliza"
+            name="monto_asegurado_poliza_rce"
+            value={formData.monto_asegurado_poliza_rce}
+            onChange={handleChange}
+            options={MONTO_ASEGURADO_POLIZA_RCE}
+          />
+          <Input
+            label="Valor Monto asegurado de la póliza"
+            name="valor_monto_asegurado_poliza_rce"
+            type="number"
+            step="0.01"
+            value={formData.valor_monto_asegurado_poliza_rce}
+            onChange={handleChange}
+          />
+          <Input
+            label="Valor asegurado de la rce"
+            name="valor_asegurado_poliza_rce"
+            type="number"
+            step="0.01"
+            value={formData.valor_asegurado_poliza_rce}
+            onChange={handleChange}
+          />
+          <Input
+            label="Inicio amparo de la póliza"
+            name="inicio_amparo_poliza_rce"
+            type="date"
+            value={formData.inicio_amparo_poliza_rce}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fin amparo de la póliza"
+            name="fin_amparo_poliza_rce"
+            type="date"
+            value={formData.fin_amparo_poliza_rce}
+            onChange={handleChange}
+          />
+          <Input
+            label="Expedicion de la póliza"
+            name="expedicion_poliza_rce"
+            type="date"
+            value={formData.expedicion_poliza_rce}
+            onChange={handleChange}
+          />
         </div>
         {/* Secciones anidadas: Nap, Cable, Caja Empalme, Reserva */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">NAP</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {['tip8','tip10','tip12','tip14','tip15','tip16','tip20'].map((key) => (
-              <Input
-                key={key}
-                label={key}
-                name={key}
-                type="number"
-                value={formData.nap[key]}
-                onChange={(e) => handleNestedChange('nap', key, e.target.value)}
-              />
-            ))}
-          </div>
-
-          <h3 className="text-lg font-semibold">Cable</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {['tipo8','tipo10','tipo12','tipo14','tipo15','tipo16','tipo20'].map((key) => (
-              <Input
-                key={key}
-                label={key}
-                name={key}
-                type="number"
-                value={formData.cable[key]}
-                onChange={(e) => handleNestedChange('cable', key, e.target.value)}
-              />
-            ))}
-          </div>
-
-          <h3 className="text-lg font-semibold">Caja Empalme</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {['tipo8','tipo10','tipo12','tipo14','tipo15','tipo16','tipo20'].map((key) => (
-              <Input
-                key={key}
-                label={key}
-                name={key}
-                type="number"
-                value={formData.caja_empalme[key]}
-                onChange={(e) => handleNestedChange('caja_empalme', key, e.target.value)}
-              />
-            ))}
-          </div>
-
-          <h3 className="text-lg font-semibold">Reserva</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {['tipo8','tipo10','tipo12','tipo14','tipo15','tipo16','tipo20'].map((key) => (
-              <Input
-                key={key}
-                label={key}
-                name={key}
-                type="number"
-                value={formData.reserva[key]}
-                onChange={(e) => handleNestedChange('reserva', key, e.target.value)}
-              />
-            ))}
-          </div>
+        <h3 className="text-lg font-semibold">Seccion de Usos</h3>
+        <div className="space-y-2">
+          {['nap', 'cable', 'caja_empalme', 'reserva'].map((section) => (
+            <div key={section} className="border rounded-lg">
+              <button
+                type="button"
+                onClick={() => toggleSection(section)}
+                className="w-full flex justify-between items-center p-3 bg-gray-50 hover:bg-gray-100"
+              >
+                <h3 className="text-lg font-semibold capitalize">{section.replace('_', ' ')}</h3>
+                <ChevronDown
+                  className={`transform transition-transform ${
+                    openSections[section] ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              {openSections[section] && (
+                <div className="p-4 border-t">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {[
+                      'tip8',
+                      'tip10',
+                      'tip12',
+                      'tip14',
+                      'tip15',
+                      'tip16',
+                      'tip20',
+                    ].map((key) => (
+                      <Input
+                        key={key}
+                        label={key}
+                        name={key}
+                        type="number"
+                        value={formData[section][key]}
+                        onChange={(e) =>
+                          handleNestedChange(section, key, e.target.value)
+                        }
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
         <div className="flex gap-4">
           <Button type="submit" variant="primary" disabled={saving}>
@@ -363,4 +615,3 @@ const ContratosEdit = () => {
 }
 
 export default ContratosEdit
-

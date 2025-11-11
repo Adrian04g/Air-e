@@ -6,6 +6,7 @@ import cableoperadoresService from '../../services/cableoperadoresService'
 import Input from '../../components/UI/Input'
 import Select from '../../components/UI/Select'
 import Button from '../../components/UI/Button'
+import Textarea from '../../components/UI/Textarea'
 import { ESTADOS_CABLEOPERADOR, RESPUESTA_PRELiquidACION } from '../../utils/constants'
 
 const CableOperadoresNew = () => {
@@ -49,7 +50,7 @@ const CableOperadoresNew = () => {
         return
       }
 
-      console.log('Usuario actual:', user)
+      //console.log('Usuario actual:', user)
       // Convertir campos numéricos
       const dataToSend = {
         ...formData,
@@ -63,7 +64,7 @@ const CableOperadoresNew = () => {
         ejecutiva_id: formData.ejecutiva_id, // Mantener el ID de ejecutiva sin transformar
       }
 
-      console.log('Datos a enviar:', dataToSend)
+      //console.log('Datos a enviar:', dataToSend)
       await cableoperadoresService.create(dataToSend)
       toast.success('Cableoperador creado exitosamente')
       navigate('/cableoperadores')
@@ -203,7 +204,7 @@ const CableOperadoresNew = () => {
             onChange={handleChange}
             options={RESPUESTA_PRELiquidACION}
           />
-          <Input
+          <Textarea
             label="Observaciones"
             name="observaciones"
             value={formData.observaciones}
@@ -214,7 +215,7 @@ const CableOperadoresNew = () => {
         </div>
         <div className="flex gap-4">
           <Button type="submit" variant="primary" disabled={loading}>
-            {loading ? 'Guardando...' : 'Crear Cable-operador'}
+            {loading ? 'Guardando...' : 'Crear Cableoperador'}
           </Button>
           <Button
             type="button"
