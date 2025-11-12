@@ -183,7 +183,7 @@ const ContratosList = () => {
             ]}
           />
           <Select
-            label="Filtrar por Cable-operador"
+            label="Filtrar por Cableoperador"
             name="filterCableoperador"
             value={filterCableoperador}
             onChange={(e) => setFilterCableoperador(e.target.value)}

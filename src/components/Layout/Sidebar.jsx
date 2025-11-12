@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { Home, Cable, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Home, Cable, FileText, ChevronLeft, ChevronRight, Receipt } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -12,6 +12,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: '/', label: 'Inicio', icon: Home },
     { path: '/cableoperadores', label: 'Cableoperadores', icon: Cable },
     { path: '/contratos', label: 'Contratos', icon: FileText },
+    { path: '/facturas', label: 'Facturas', icon: Receipt },
   ]
 
   const isActiveRoute = (path) => {
