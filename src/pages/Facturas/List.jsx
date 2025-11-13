@@ -228,13 +228,7 @@ const FacturasList = () => {
                         >
                           Editar
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => handleDelete(factura.id)}
-                        >
-                          Eliminar
-                        </Button>
+                        
                       </div>
                     </td>
                   </tr>
