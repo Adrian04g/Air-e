@@ -111,7 +111,7 @@ const CableOperadoresList = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+      <div className="dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <div className="flex gap-2">
@@ -164,7 +164,7 @@ const CableOperadoresList = () => {
           filteredCableoperadores.map((co) => (
             <div 
               key={co.id} 
-              className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow"
+              className=" dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow"
             >
               {/* Card Header */}
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 text-white p-4">
@@ -226,7 +226,7 @@ const CableOperadoresList = () => {
           ))
         )}
       </div>
-      <div className="mt-4 px-4 py-3 bg-white border-t flex items-center justify-between">
+      <div className="mt-4 px-4 py-3 border-t flex items-center justify-between">
         <div className="text-sm text-gray-700">
           Mostrando {cableoperadores.length} de {totalCount} cableoperadores
         </div>

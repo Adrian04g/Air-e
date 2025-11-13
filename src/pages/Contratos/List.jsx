@@ -133,7 +133,7 @@ const ContratosList = () => {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-4 space-y-4">
+      <div className=" rounded-lg shadow-md p-4 space-y-4">
         <div className="flex gap-2">
           <input
             type="text"
@@ -198,7 +198,7 @@ const ContratosList = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="rounded-lg shadow-md overflow-hidden">
         {filteredContratos.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
             <p>No se encontraron contratos</p>
@@ -225,7 +225,7 @@ const ContratosList = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200">
                 {filteredContratos.map((contrato) => (
                   <tr key={contrato.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -273,7 +273,7 @@ const ContratosList = () => {
                 ))}
               </tbody>
             </table>
-            <div className="px-4 py-3 bg-white border-t flex items-center justify-between">
+            <div className="px-4 py-3 border-t flex items-center justify-between">
               <div className="text-sm text-gray-700">
                 Mostrando {contratos.length} de {totalCount} contratos
               </div>

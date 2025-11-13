@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       }`}>
         {!(expanded ? false : isCollapsed) && (
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 overflow-hidden flex items-center justify-center flex-shrink-0 bg-white">
+            <div className="w-10 h-10 overflow-hidden flex items-center justify-center flex-shrink-0 ">
               <img
                 src="/logo-aire-intervenida.png"
                 alt="AIR-E"
@@ -48,7 +48,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         )}
         
         {(expanded ? false : isCollapsed) && (
-          <div className="w-10 h-10 overflow-hidden flex items-center justify-center bg-white">
+          <div className="w-10 h-10 overflow-hidden flex items-center justify-center ">
             <img
               src="/logo-aire-intervenida.png"
               alt="AIR-E"
