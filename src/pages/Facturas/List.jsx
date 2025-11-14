@@ -6,7 +6,7 @@ import Button from '../../components/UI/Button'
 import Input from '../../components/UI/Input'
 import Select from '../../components/UI/Select'
 import Loading from '../../components/UI/Loading'
-import { formatDate, formatNumber } from '../../utils/formatters'
+import { formatDate, formatNumber, formatMonthYear } from '../../utils/formatters'
 
 const FacturasList = () => {
   const navigate = useNavigate()
@@ -202,7 +202,7 @@ const FacturasList = () => {
                         : (factura.cableoperador?.nombre || factura.cableoperador?.nombre_largo || 'N/A')}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-700">
-                      {formatDate(factura.Fecha_facturacion)}
+                      {formatMonthYear(factura.Mes_uso)}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900 font-semibold">
                       ${formatNumber(factura.Valor_facturado_iva)}
