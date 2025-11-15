@@ -1,11 +1,17 @@
 import api from '../utils/api'
 
+// Configuración de paginación
+const PAGE_SIZE = 50; // Tamaño de página por defecto
+
 const contratosService = {
   // Devuelve la respuesta completa (count, next, results...)
+  // Transforma page -> desplazamiento (offset)
   getAllFull: async (params = {}) => {
-    // Normalizar y limpiar params para evitar valores inválidos que provoquen 400
-    const safeParams = {}
-    Object.entries(params || {}).forEach(([k, v]) => {
+    // Normalizar y limpiar params para evitar valores inválidos
+    const { page = 1, ...otherParams } = params
+    const safeParams = { desplazamiento: (page - 1) * PAGE_SIZE, tamaño: PAGE_SIZE }
+    
+    Object.entries(otherParams || {}).forEach(([k, v]) => {
       if (v === undefined || v === null) return
       if (typeof v === 'string') {
         const trimmed = v.trim()
@@ -38,7 +44,12 @@ const contratosService = {
   getAllAllPages: async (params = {}) => {
     const accumulated = []
     let url = '/api/contratos/list/'
-    let query = { ...params }
+    const { page = 1, ...otherParams } = params
+    let query = {
+      ...otherParams,
+      desplazamiento: (page - 1) * PAGE_SIZE,
+      tamaño: PAGE_SIZE,
+    }
 
     let response = await api.get(url, { params: query })
     const firstData = response.data
