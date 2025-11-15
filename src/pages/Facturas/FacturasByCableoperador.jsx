@@ -8,7 +8,7 @@ import Button from '../../components/UI/Button'
 import Input from '../../components/UI/Input'
 import Select from '../../components/UI/Select'
 import Loading from '../../components/UI/Loading'
-import { formatDate, formatNumber } from '../../utils/formatters'
+import { formatDate, formatNumber, formatMonthYear } from '../../utils/formatters'
 
 const FacturasByCableoperador = () => {
 	const { id } = useParams()
@@ -210,7 +210,7 @@ const FacturasByCableoperador = () => {
 										Nº Factura
 									</th>
 									<th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-										Fecha Facturación
+										Mes de Uso
 									</th>
 									<th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
 										Valor Facturado
@@ -235,9 +235,9 @@ const FacturasByCableoperador = () => {
 										<td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 font-semibold">
 											{factura.Num_factura}
 										</td>
-										<td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
-											{formatDate(factura.Fecha_facturacion)}
-										</td>
+									<td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
+										{formatMonthYear(factura.Mes_uso)}
+									</td>
 										<td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 font-semibold">
 											${formatNumber(factura.Valor_facturado_iva)}
 										</td>

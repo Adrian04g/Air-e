@@ -6,7 +6,7 @@ import Button from '../../components/UI/Button'
 import Input from '../../components/UI/Input'
 import Select from '../../components/UI/Select'
 import Loading from '../../components/UI/Loading'
-import { formatDate, formatNumber } from '../../utils/formatters'
+import { formatDate, formatNumber, formatMonthYear } from '../../utils/formatters'
 
 const FacturasList = () => {
   const navigate = useNavigate()
@@ -120,7 +120,7 @@ const FacturasList = () => {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Facturas</h2>
+        <h2 className="text-2xl font-bold text-gray-800 text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">Facturas</h2>
         <Button onClick={() => navigate('/facturas/nueva')} variant="primary">
           Nueva Factura
         </Button>
@@ -202,7 +202,7 @@ const FacturasList = () => {
                         : (factura.cableoperador?.nombre || factura.cableoperador?.nombre_largo || 'N/A')}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-700">
-                      {formatDate(factura.Fecha_facturacion)}
+                      {formatMonthYear(factura.Mes_uso)}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900 font-semibold">
                       ${formatNumber(factura.Valor_facturado_iva)}
