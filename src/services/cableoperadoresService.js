@@ -3,11 +3,19 @@ import api from '../utils/api'
 // 🚨 CLAVE DEL CACHÉ y TIEMPO DE EXPIRACIÓN (5 minutos)
 const CABLEOPERADORES_CACHE_KEY = 'cableoperadores_list_cache';
 const CACHE_EXPIRY_MS = 5 * 60 * 1000; // 5 minutos en milisegundos
+const PAGE_SIZE = 50; // Tamaño de página por defecto
 
 const cableoperadoresService = {
   // Devuelve la respuesta completa (útil para leer count, next, previous)
+  // Transforma page -> desplazamiento (offset)
   getAllFull: async (params = {}) => {
-    const response = await api.get('/api/cableoperadores/list/', { params })
+    const { page = 1, ...otherParams } = params
+    const safeParams = {
+      ...otherParams,
+      desplazamiento: (page - 1) * PAGE_SIZE,
+      tamaño: PAGE_SIZE,
+    }
+    const response = await api.get('/api/cableoperadores/list/', { params: safeParams })
     return response.data
   },
 
@@ -43,7 +51,13 @@ const cableoperadoresService = {
     // --- Lógica de carga real (si el caché falla o expira) ---
     const accumulated = []
     let url = '/api/cableoperadores/list/'
-    let query = { ...params }
+    // Transformar page -> desplazamiento si viene en params
+    const { page = 1, ...otherParams } = params
+    let query = {
+      ...otherParams,
+      desplazamiento: (page - 1) * PAGE_SIZE,
+      tamaño: PAGE_SIZE,
+    }
     let firstData = null;
 
     // First request
