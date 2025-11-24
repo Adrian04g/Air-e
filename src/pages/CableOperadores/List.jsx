@@ -213,21 +213,21 @@ const CableOperadoresList = () => {
         )}
       </div>
       <div className="mt-4 px-4 py-3 border-t flex items-center justify-between">
-        <div className="text-sm text-gray-100">
+        <div className="text-sm text-gray-700">
           Mostrando {cableoperadores.length} de {totalCount} cableoperadores
         </div>
-        <div className="flex items-center space-x-2 text-gray-100">
+        <div className="flex items-center space-x-2">
           <button
             onClick={() => { if (page > 1) setPage(page - 1) }}
             disabled={page <= 1}
-            className={`px-3 py-1 rounded ${page <= 1 ? 'opacity-100 cursor-not-allowed' : 'bg-gray-100 hover:bg-gray-200'}`}>
+            className={`px-3 py-1 rounded ${page <= 1 ? 'opacity-100 cursor-not-allowed' : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100'}`}>
             Anterior
           </button>
-          <div className="text-sm">Página {page} de {Math.max(1, Math.ceil(totalCount / (pageSize || totalCount || 1)))}</div>
+          <div className="text-sm dark:text-gray-100">Página {page} de {Math.max(1, Math.ceil(totalCount / (pageSize || totalCount || 1)))}</div>
           <button
             onClick={() => { if (page < Math.ceil(totalCount / (pageSize || totalCount || 1))) setPage(page + 1) }}
             disabled={page >= Math.ceil(totalCount / (pageSize || totalCount || 1))}
-            className={`px-3 py-1 rounded ${page >= Math.ceil(totalCount / (pageSize || totalCount || 1)) ? 'opacity-100 cursor-not-allowed' : 'bg-gray-100 hover:bg-gray-200'}`}>
+            className={`px-3 py-1 rounded ${page >= Math.ceil(totalCount / (pageSize || totalCount || 1)) ? 'opacity-100 cursor-not-allowed' : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100'}`}>
             Siguiente
           </button>
         </div>
