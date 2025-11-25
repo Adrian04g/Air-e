@@ -41,10 +41,13 @@ const ProyectosDetail = () => {
       <div className="bg-white rounded shadow p-4 space-y-3">
         <p><strong>Ingreso (OT_AIRE):</strong> {item.datos_ingreso?.OT_AIRE}</p>
         <p><strong>Nombre proyecto:</strong> {item.datos_ingreso?.nombre}</p>
-        <p><strong>Inspector responsable:</strong> {item.inspector_responsable?.nombre || item.inspector_responsable}</p>
-        <p><strong>Estado actual:</strong> {item.estado_actual}</p>
+        <p><strong>Inspector responsable:</strong> {item.inspector_responsable?.user.username || item.inspector_responsable}</p>
         <p><strong>Fecha inspección:</strong> {item.fecha_inspeccion ? formatDate(item.fecha_inspeccion) : ''}</p>
         <p><strong>Fecha análisis inspección:</strong> {item.fecha_analisis_inspeccion ? formatDate(item.fecha_analisis_inspeccion) : ''}</p>
+        <p><strong>Estado inicial:</strong> {item.estado_inicial}</p>
+        <p><strong>Estado actual:</strong> {item.estado_actual}</p>
+        <p><strong>Estado actual:</strong> {item.estado_actual}</p>
+        <p><strong>Estado actual:</strong> {item.estado_actual}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h4 className="font-semibold">Cables</h4>
