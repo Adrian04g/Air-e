@@ -31,6 +31,11 @@ export const VIGENCIA_AMPARO_POLIZA = [
   { value: 'Igual_a_Duracion_de_Contrato_mas_4_Meses', label: 'Igual a Duración de Contrato + 4 Meses' },
   { value: 'Igual_a_Duracion_de_Contrato_mas_2_Meses', label: 'Igual a Duración de Contrato + 2 Meses' },
 ]
+// Estado inicial de proyectos
+export const ESTADO_INICIAL = [
+  { value: 'gestionar_escritorio', label: 'Gestionar desde Escritorio' },
+  { value: 'gestionar_sitio', label: 'Gestionar en Sitio' },
+]
 // Estados de contratos
 export const ESTADOS_CONTRATO = [
   { value: 'Vigente', label: 'Vigente' },

@@ -44,9 +44,9 @@ const ProyectosDetail = () => {
         <p><strong>Inspector responsable:</strong> {item.inspector_responsable?.user.username || item.inspector_responsable}</p>
         <p><strong>Fecha inspección:</strong> {item.fecha_inspeccion ? formatDate(item.fecha_inspeccion) : ''}</p>
         <p><strong>Fecha análisis inspección:</strong> {item.fecha_analisis_inspeccion ? formatDate(item.fecha_analisis_inspeccion) : ''}</p>
-        <p><strong>Estado inicial:</strong> {item.estado_inicial}</p>
-        <p><strong>Estado actual:</strong> {item.estado_actual}</p>
-        <p><strong>Estado actual:</strong> {item.estado_actual}</p>
+        <p><strong>Estado inicial:</strong> {item.estado_inicial === 'gestionar_escritorio' ? 'Gestion desde Escritorio' : 'Gestion en sitio'}</p>
+        <p><strong>Fecha de entrega:</strong> {item.fecha_entrega_pj ? formatDate(item.fecha_entrega_pj) : ''}</p>
+        <p><strong>Fecha de notificacion a PRST:</strong> {item.fecha_notificacion_prst ? formatDate(item.fecha_notificacion_prst) : ''}</p>
         <p><strong>Estado actual:</strong> {item.estado_actual}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
