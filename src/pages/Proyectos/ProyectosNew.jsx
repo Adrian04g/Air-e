@@ -96,7 +96,7 @@ const ProyectosNew = () => {
             name="inspector_responsable"
             value={formData.inspector_responsable}
             onChange={handleChange}
-            options={inspectores.map((it) => ({ value: it.id?.toString?.() || it.pk || it.id, label: it.nombre || it.nombre_completo || String(it.id) }))}
+            options={inspectores.map((it) => ({ value: it.id?.toString?.() || it.pk || it.id, label: it.nombre || it.nombre_completo || String(it.user.username) }))}
           />
 
           <Input label="Estado Actual" name="estado_actual" value={formData.estado_actual} onChange={handleChange} />

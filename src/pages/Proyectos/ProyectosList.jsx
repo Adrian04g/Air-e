@@ -63,15 +63,15 @@ const ProyectosList = () => {
             </thead>
             <tbody>
               {items.map((it) => (
-                <tr key={it.OT_AIRE} className="border-t">
-                  <td className="py-2">{it.OT_AIRE}</td>
-                  <td className="py-2">{it.nombre}</td>
-                  <td className="py-2">{it.estado || it.estado_ingreso || ''}</td>
+                <tr key={it.datos_ingreso.OT_AIRE} className="border-t">
+                  <td className="py-2">{it.datos_ingreso.OT_AIRE}</td>
+                  <td className="py-2">{it.datos_ingreso.nombre}</td>
+                  <td className="py-2">{it.estado || it.estado_actual || ''}</td>
                   <td className="py-2">
                     <div className="flex gap-2 justify-end">
-                      <Button size="sm" variant="secondary" onClick={() => navigate(`/proyectos/${it.OT_AIRE}`)}>Ver</Button>
-                      <Button size="sm" variant="primary" onClick={() => navigate(`/proyectos/${it.OT_AIRE}/editar`)}>Editar</Button>
-                      <Button size="sm" variant="danger" onClick={() => handleDelete(it.OT_AIRE)}>Eliminar</Button>
+                      <Button size="sm" variant="secondary" onClick={() => navigate(`/proyectos/${it.datos_ingreso.OT_AIRE}`)}>Ver</Button>
+                      <Button size="sm" variant="primary" onClick={() => navigate(`/proyectos/${it.datos_ingreso.OT_AIRE}/editar`)}>Editar</Button>
+                      <Button size="sm" variant="danger" onClick={() => handleDelete(it.datos_ingreso.OT_AIRE)}>Eliminar</Button>
                     </div>
                   </td>
                 </tr>
