@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { formatDate } from '../../utils/formatters'
 import proyectosService from '../../services/proyectosService'
 import Button from '../../components/UI/Button'
 import Loading from '../../components/UI/Loading'
@@ -58,6 +59,8 @@ const ProyectosList = () => {
                 <th>OT_AIRE</th>
                 <th>Nombre</th>
                 <th>Estado</th>
+                <th>Fecha Inspección</th>
+                <th>Fecha Entrega PJ</th>
                 <th></th>
               </tr>
             </thead>
@@ -67,6 +70,8 @@ const ProyectosList = () => {
                   <td className="py-2">{it.datos_ingreso.OT_AIRE}</td>
                   <td className="py-2">{it.datos_ingreso.nombre}</td>
                   <td className="py-2">{it.estado || it.estado_actual || ''}</td>
+                  <td className="py-2">{it.fecha_inspeccion ? formatDate(it.fecha_inspeccion) : ''}</td>
+                  <td className="py-2">{it.fecha_entrega_pj ? formatDate(it.fecha_entrega_pj) : ''}</td>
                   <td className="py-2">
                     <div className="flex gap-2 justify-end">
                       <Button size="sm" variant="secondary" onClick={() => navigate(`/proyectos/${it.datos_ingreso.OT_AIRE}`)}>Ver</Button>
