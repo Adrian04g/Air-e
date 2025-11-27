@@ -125,7 +125,7 @@ const ContratosList = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-blue-100">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">Contratos</h2>
         <Link to="/contratos/nuevo">

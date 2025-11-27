@@ -49,7 +49,7 @@ const ProyectosList = () => {
         </Link>
       </div>
 
-      <div className="bg-white rounded shadow p-4">
+      <div className="bg-blue-100 rounded shadow p-4">
         {items.length === 0 ? (
           <p className="text-gray-500">No hay proyectos</p>
         ) : (

@@ -64,7 +64,7 @@ const IngresoList = () => {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg p-4">
+      <div className="bg-blue-100 rounded-lg p-4">
         <div className="flex gap-2">
           <input
             type="text"
@@ -79,7 +79,7 @@ const IngresoList = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg overflow-hidden">
+      <div className="bg-blue-100 rounded-lg overflow-hidden">
         {items.length === 0 ? (
           <div className="p-6 text-center text-gray-500">No hay ingresos registrados</div>
         ) : (
