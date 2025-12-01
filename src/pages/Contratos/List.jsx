@@ -127,7 +127,7 @@ const ContratosList = () => {
   return (
     <div className="space-y-6 bg-blue-100">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">Contratos</h2>
+        <h2 className="bg-black-100 text-2xl md:text-1xl font-bold text-gray-900 dark:text-black-100 text-1xl font-bold text-gray-800">Contratos</h2>
         <Link to="/contratos/nuevo">
           <Button variant="primary">➕ Nuevo Contrato</Button>
         </Link>
@@ -170,7 +170,7 @@ const ContratosList = () => {
             Limpiar
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 dark:text-gray-100">
+        <div className="bg-black-100 grid grid-cols-1 md:grid-cols-2 gap-4 dark:text-black-100">
           <Select
             label="Filtrar por Estado"
             name="filterEstado "
@@ -198,9 +198,9 @@ const ContratosList = () => {
         </div>
       </div>
 
-      <div className=" rounded-lg shadow-md overflow-hidden dark:text-gray-100 text-2xl font-bold text-gray-800">
+      <div className=" rounded-lg shadow-md overflow-hidden dark:text-black-100 text-2xl font-bold text-gray-800">
         {filteredContratos.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-100 text-2xl font-bold text-gray-800">
+          <div className="text-center py-12 text-gray-500 dark:text-black-100 text-2xl font-bold text-gray-800">
             <p>No se encontraron contratos</p>
           </div>
         ) : (

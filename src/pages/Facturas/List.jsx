@@ -127,8 +127,8 @@ const FacturasList = () => {
       </div>
 
       {/* Filtros */}
-      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-blue-100 rounded-lg shadow-md p-4 mb-6">
+        <div className="bg-black-100 grid grid-cols-1 md:grid-cols-3 gap-4">
           <Input
             label="Buscar por Número de Factura o CableOperador"
             name="search"
@@ -154,9 +154,9 @@ const FacturasList = () => {
       </div>
 
       {/* Tabla de facturas */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-blue-100 rounded-lg shadow-md overflow-hidden">
         {facturas.length === 0 ? (
-          <div className="p-6 text-center text-gray-500">
+          <div className="p-6 text-center text-black-100">
             No hay facturas registradas
           </div>
         ) : (
