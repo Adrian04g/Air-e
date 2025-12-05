@@ -29,7 +29,7 @@ const MainLayout = ({ children }) => {
         onToggleCollapse={() => setIsCollapsed((v) => !v)}
       />
       
-      <div className={`bg-blue-100 flex flex-col flex-1 transition-all duration-300 ${
+      <div className={`bg-white-100 flex flex-col flex-1 transition-all duration-300 ${
         isCollapsed ? 'lg:ml-16' : 'lg:ml-72'
       }`}>
         <Header onMenuClick={() => setSidebarOpen(true)} />

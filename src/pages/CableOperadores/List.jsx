@@ -86,10 +86,10 @@ const CableOperadoresList = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-1xl font-bold text-gray-900 dark:text-gray-100 text-1xl font-bold text-gray-800">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">
             Cableoperadores
           </h1>
-          <p className="text-2xl md:text-1xl font-bold text-gray-900 dark:text-gray-100 text-1xl font-bold text-gray-800">
+          <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">
             Gestiona los cableoperadores del sistema
           </p>
         </div>
@@ -213,7 +213,7 @@ const CableOperadoresList = () => {
         )}
       </div>
       <div className="mt-4 px-4 py-3 border-t flex items-center justify-between">
-        <div className="text-xl md:text-1xl font-bold text-gray-900 dark:text-gray-100 text-1xl font-bold text-gray-800">
+        <div className="text-xl md:text-1xl font-bold text-gray-900 dark:text-black-100 text-1xl font-bold text-gray-800">
           Mostrando {cableoperadores.length} de {totalCount} cableoperadores
         </div>
         <div className="flex items-center space-x-2">
@@ -223,7 +223,7 @@ const CableOperadoresList = () => {
             className={`px-3 py-1 rounded ${page <= 1 ? 'opacity-100 cursor-not-allowed' : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100'}`}>
             Anterior
           </button>
-          <div className="text-sm dark:text-gray-100">Página {page} de {Math.max(1, Math.ceil(totalCount / (pageSize || totalCount || 1)))}</div>
+          <div className="text-sm dark:text-black-100">Página {page} de {Math.max(1, Math.ceil(totalCount / (pageSize || totalCount || 1)))}</div>
           <button
             onClick={() => { if (page < Math.ceil(totalCount / (pageSize || totalCount || 1))) setPage(page + 1) }}
             disabled={page >= Math.ceil(totalCount / (pageSize || totalCount || 1))}
