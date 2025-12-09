@@ -25,7 +25,6 @@ const FacturasNew = () => {
     Fecha_vencimiento: '',
     Periodo_vencimiento: '',
     estado: 'Pendiente',
-    monto_total: '0',
   })
 
   useEffect(() => {
@@ -72,7 +71,6 @@ const FacturasNew = () => {
         contratos: parseInt(formData.contratos),
         Valor_facturado_iva: parseFloat(formData.Valor_facturado_iva) || 0,
         Valor_iva_millones: parseFloat(formData.Valor_iva_millones) || 0,
-        monto_total: parseFloat(formData.monto_total) || 0,
         Mes_uso: convertMonthToDate(formData.Mes_uso),
         Periodo_vencimiento: convertMonthToDate(formData.Periodo_vencimiento),
       }
@@ -178,14 +176,6 @@ const FacturasNew = () => {
               { value: 'Pagada', label: 'Pagada' },
               { value: 'Anulada', label: 'Anulada' },
             ]}
-          />
-          <Input
-            label="Monto Total"
-            name="monto_total"
-            type="number"
-            step="0.01"
-            value={formData.monto_total}
-            onChange={handleChange}
           />
         </div>
 

@@ -8,7 +8,7 @@ const dashboardService = {
       // Pedimos la respuesta completa para poder leer el `count`
       const [cableoperadoresResponse, contratosResponse, facturasResponse] = await Promise.all([
         cableoperadoresService.getAllFull(),
-        contratosService.getAllFull(),
+        contratosService.getAllAllPages(),
         facturasService.getAllFull(),
       ])
 

@@ -8,7 +8,7 @@ import Select from '../../components/UI/Select'
 import SearchableSelect from '../../components/UI/SearchableSelect'
 import Button from '../../components/UI/Button'
 import Loading from '../../components/UI/Loading'
-import { formatDateForInput, convertMonthToDate, addOneMonth } from '../../utils/formatters'
+import { formatDateForInput, convertMonthToDate, addOneMonth, convertDateToMonth } from '../../utils/formatters'
 
 const FacturasEdit = () => {
   const { id } = useParams()
@@ -26,7 +26,6 @@ const FacturasEdit = () => {
     Fecha_vencimiento: '',
     Periodo_vencimiento: '',
     estado: 'Pendiente',
-    monto_total: '0',
   })
 
   useEffect(() => {
@@ -56,7 +55,6 @@ const FacturasEdit = () => {
         contratos: facturaData.contratos?.id?.toString() || facturaData.contratos?.toString() || '',
         Valor_facturado_iva: facturaData.Valor_facturado_iva?.toString() || '',
         Valor_iva_millones: facturaData.Valor_iva_millones?.toString() || '',
-        monto_total: facturaData.monto_total?.toString() || '0',
         Mes_uso: facturaData.Mes_uso ? facturaData.Mes_uso.slice(0, 7) : '',
         Fecha_facturacion: formatDateForInput(facturaData.Fecha_facturacion),
         Fecha_vencimiento: formatDateForInput(facturaData.Fecha_vencimiento),
@@ -98,9 +96,8 @@ const FacturasEdit = () => {
         contratos: parseInt(formData.contratos),
         Valor_facturado_iva: parseFloat(formData.Valor_facturado_iva) || 0,
         Valor_iva_millones: parseFloat(formData.Valor_iva_millones) || 0,
-        monto_total: parseFloat(formData.monto_total) || 0,
         Mes_uso: convertMonthToDate(formData.Mes_uso),
-        Periodo_vencimiento: convertMonthToDate(formData.Periodo_vencimiento),
+        Periodo_vencimiento: formData.Periodo_vencimiento,
       }
 
       await facturasService.update(id, dataToSend)
@@ -166,13 +163,14 @@ const FacturasEdit = () => {
             required
           />
           <Input
-            label="Período de Vencimiento"
-            name="Periodo_vencimiento"
-            type="month"
-            value={formData.Periodo_vencimiento}
-            onChange={handleChange}
-            disabled
-            required
+              label="Período de Vencimiento"
+              name="Periodo_vencimiento"
+              type="month"
+              // Esto asegura que si formData.Periodo_vencimiento es '2026-01-01', el valor sea '2026-01'
+              value={convertDateToMonth(formData.Periodo_vencimiento)} 
+              onChange={handleChange}
+              disabled
+              required
           />
           <Input
             label="Valor Facturado (IVA)"
@@ -202,14 +200,6 @@ const FacturasEdit = () => {
               { value: 'Pagada', label: 'Pagada' },
               { value: 'Anulada', label: 'Anulada' },
             ]}
-          />
-          <Input
-            label="Monto Total"
-            name="monto_total"
-            type="number"
-            step="0.01"
-            value={formData.monto_total}
-            onChange={handleChange}
           />
         </div>
 

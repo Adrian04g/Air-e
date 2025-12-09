@@ -92,4 +92,28 @@ export const addOneMonth = (monthString) => {
     return ''
   }
 }
+export const convertDateToMonth = (dateValue) => {
+  if (!dateValue) return ''
+  try {
+    // Si dateValue ya es una cadena y tiene el formato YYYY-MM-DD,
+    // simplemente tomamos los primeros 7 caracteres.
+    if (typeof dateValue === 'string' && dateValue.length >= 7) {
+        return dateValue.substring(0, 7)
+    }
+
+    // Si es un objeto Date o una cadena en formato ISO, lo convertimos
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
+
+    // Comprobar si la fecha es válida
+    if (isNaN(date.getTime())) return ''
+
+    // Usamos toISOString para obtener una representación estándar y extraemos YYYY-MM
+    return date.toISOString().slice(0, 7)
+    
+  } catch (error) {
+    console.error('Error al convertir fecha a mes:', error)
+    return ''
+  }
+}
+
 
