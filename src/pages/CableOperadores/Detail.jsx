@@ -76,7 +76,7 @@ const CableOperadoresDetail = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Detalle Cableoperador</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-gray-800"> Detalle Cableoperador</h2>
         <div className="flex gap-2">
           <Link to={`/cableoperadores/${id}/editar`}>
             <Button variant="secondary">Editar</Button>
@@ -93,7 +93,7 @@ const CableOperadoresDetail = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+      <div className="bg-blue-100 rounded-lg shadow-md p-6 space-y-6">
         <div className="bg-secondary text-white rounded-lg p-4 mb-6">
           <h3 className="text-2xl font-bold text-center">{cableoperador.nombre_largo}</h3>
           {cableoperador.nombre && (
@@ -122,7 +122,7 @@ const CableOperadoresDetail = () => {
         </div>
       </div>
       <br />
-      <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+      <div className="bg-blue-100 rounded-lg shadow-md p-6 space-y-4">
     {/* Formulario para agregar notificación */}
     <div className="border-b pb-4 mb-4">
       <h3 className="text-xl font-bold text-gray-800 mb-4">Nueva Notificación</h3>
@@ -187,7 +187,7 @@ const CableOperadoresDetail = () => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-800 mb-1">
             Fecha
           </label>
           <input
@@ -207,7 +207,7 @@ const CableOperadoresDetail = () => {
     {/* Lista de notificaciones */}
     <h3 className="text-xl font-bold text-gray-800 border-b pb-2">Historial de Notificaciones ({notificaciones.count})</h3>
     {notificaciones.count === 0 ? (
-      <p className="text-gray-500">No hay notificaciones registradas para este cableoperador.</p>
+      <p className="text-2xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">No hay notificaciones registradas para este cableoperador.</p>
     ) : (
       <div className="space-y-4">
           {notificaciones.results.map(notificacion => (

@@ -87,7 +87,7 @@ const ProyectosNew = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-2xl md-6:text-1xl font-bold text-gray-900 dark:text-gray-100 text-1xl font-bold text-gray-800">Nuevo Proyecto</h2>
+      <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">Nuevo Proyecto</h2>
       <form onSubmit={handleSubmit} className="bg-blue-100 rounded-lg shadow-md p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-900.mb-2">
           <SearchableSelect

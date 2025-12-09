@@ -58,7 +58,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       }`}>
         {!(expanded ? false : isCollapsed) && (
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 overflow-hidden flex items-center justify-center flex-shrink-0 ">
+            <div className="bg-black-100 w-10 h-10 overflow-hidden flex items-center justify-center flex-shrink-0 ">
               <img
                 src="/logo-aire-intervenida.png"
                 alt="AIR-E"

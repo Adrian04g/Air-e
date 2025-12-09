@@ -43,7 +43,7 @@ const IngresoDetail = () => {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Ingreso {item.OT_AIRE}</h2>
+        <h2 className="text-2xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">Ingreso {item.OT_AIRE}</h2>
         <div className="flex gap-2">
           <Link to={`/proyectos/ingreso/${id}/editar`}><Button variant="secondary">Editar</Button></Link>
           <Button variant="danger" onClick={handleDelete}>Eliminar</Button>
