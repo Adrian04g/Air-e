@@ -160,7 +160,7 @@ const FacturasDetail = () => {
       <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
         {/* Encabezado */}
         <div className="bg-secondary text-white rounded-lg p-4 mb-6">
-          <h3 className="bg-black text-2xl font-bold text-center">Cableoperador {factura.contratos?.cableoperador?.nombre_largo || factura.contratos?.cableoperador?.nombre || 'N/A'}</h3>
+          <h3 className="bg-black text-2xl font-bold text-center">Cableoperador {factura.cableoperador?.nombre || 'N/A'}</h3>
           <p className="text-center mt-2 opacity-90">
             Factura N° {factura.Num_factura}
           

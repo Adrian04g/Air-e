@@ -137,7 +137,7 @@ const ContratosList = () => {
         <div className="flex gap-2">
           <input
             type="text"
-            placeholder="Buscar por cable-operador... (Enter para buscar)"
+            placeholder="Buscar por cableoperador... (Enter para buscar)"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyDown={(e) => {

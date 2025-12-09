@@ -60,13 +60,13 @@ const Header = ({ onMenuClick }) => {
           </button>
 
           {/* Notifications */}
-          <button 
+          {/* <button 
             className="relative p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors h-9 w-9 flex items-center justify-center"
             aria-label="Notificaciones"
           >
             <Bell className="w-5 h-5" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          </button> */}
 
           {/* User menu */}
           <div className="relative">
@@ -114,19 +114,19 @@ const Header = ({ onMenuClick }) => {
                   </div>
 
                   {/* Menu items */}
-                  <button
+                  {/* <button
                     className="flex items-center w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                   >
                     <User className="w-4 h-4 mr-3" />
                     Mi Perfil
-                  </button>
+                  </button> */}
 
-                  <button
+                  {/* <button
                     className="flex items-center w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                   >
                     <Settings className="w-4 h-4 mr-3" />
                     Configuración
-                  </button>
+                  </button> */}
                   
                   <div className="border-t border-gray-100 dark:border-gray-700 my-1"></div>
                   

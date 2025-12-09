@@ -8,7 +8,7 @@ import Select from '../../components/UI/Select'
 import Button from '../../components/UI/Button'
 import Loading from '../../components/UI/Loading'
 import { ChevronDown } from 'lucide-react'
-import { ESTADOS_CONTRATO,VIGENCIA_AMPARO_POLIZA, MONTO_ASEGURADO_POLIZA_RCE, MONTO_ASEGURADO_POLIZA_CUMPLIMIENTO  } from '../../utils/constants'
+import { ESTADOS_CONTRATO,VIGENCIA_AMPARO_POLIZA, MONTO_ASEGURADO_POLIZA_CHOICES  } from '../../utils/constants'
 import { formatDateForInput } from '../../utils/formatters'
 
 const ContratosEdit = () => {
@@ -423,7 +423,7 @@ const ContratosEdit = () => {
             name="monto_asegurado_poliza_cumplimiento"
             value={formData.monto_asegurado_poliza_cumplimiento}
             onChange={handleChange}
-            options={MONTO_ASEGURADO_POLIZA_CUMPLIMIENTO}
+            options={MONTO_ASEGURADO_POLIZA_CHOICES}
           />
           <Input
             label="Valor Monto asegurado de la póliza"
@@ -514,7 +514,7 @@ const ContratosEdit = () => {
             name="monto_asegurado_poliza_rce"
             value={formData.monto_asegurado_poliza_rce}
             onChange={handleChange}
-            options={MONTO_ASEGURADO_POLIZA_RCE}
+            options={MONTO_ASEGURADO_POLIZA_CHOICES}
           />
           <Input
             label="Valor Monto asegurado de la póliza"

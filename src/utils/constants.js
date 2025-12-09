@@ -11,15 +11,12 @@ export const ESTADOS_CABLEOPERADOR = [
   { value: 'Sin_usos', label: 'Sin Usos' },
 ]
 // monto asegurado póliza de cumplimiento
-export const MONTO_ASEGURADO_POLIZA_CUMPLIMIENTO = [
+export const MONTO_ASEGURADO_POLIZA_CHOICES = [
   { value: '15%_valor_contrato', label: '15% Valor del Contrato' },
   { value: '20%_valor_contrato', label: '20% Valor del Contrato' },
   { value: '30%_valor_contrato', label: '30% Valor del Contrato' },
   { value: '20%_valor_base_constitucion_poliza', label: '20% Valor base de Constitución de Póliza' },
   { value: '30%_valor_base_constitucion_poliza', label: '30% Valor base de Constitución de Póliza' },
-]
-// monto asegurado póliza de rce
-export const MONTO_ASEGURADO_POLIZA_RCE = [
   { value: 'no_inferior_100_SMLMV', label: 'No inferior a 100 SMLMV' },
   { value: 'no_inferior_200_SMLMV', label: 'No inferior a 200 SMLMV' },
   { value: 'no_inferior_300_SMLMV', label: 'No inferior a 300 SMLMV' },
