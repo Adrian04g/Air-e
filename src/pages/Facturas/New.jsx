@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import facturasService from '../../services/facturasService'
-import contratosService from '../../services/contratosService'
+import cableoperadoresService from '../../services/cableoperadoresService'
 import Input from '../../components/UI/Input'
 import Select from '../../components/UI/Select'
 import SearchableSelect from '../../components/UI/SearchableSelect'
@@ -14,9 +14,9 @@ const FacturasNew = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [contratos, setContratos] = useState([])
+  const [cableoperadores, setCableoperadores] = useState([])
   const [formData, setFormData] = useState({
-    contratos: '',
+    cableoperador: '',
     Mes_uso: '',
     Fecha_facturacion: new Date().toISOString().split('T')[0],
     Num_factura: '',
@@ -28,16 +28,16 @@ const FacturasNew = () => {
   })
 
   useEffect(() => {
-    loadContratos()
+    loadCableoperadores()
   }, [])
 
-  const loadContratos = async () => {
+  const loadCableoperadores = async () => {
     try {
-      const data = await contratosService.getAllFull()
+      const data = await cableoperadoresService.getAllFull()
       const items = Array.isArray(data?.results) ? data.results : (data || [])
-      setContratos(items)
+      setCableoperadores(items)
     } catch (error) {
-      toast.error('Error al cargar contratos')
+      toast.error('Error al cargar cableoperadores')
     } finally {
       setLoading(false)
     }
@@ -58,7 +58,7 @@ const FacturasNew = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!formData.contratos || !formData.Num_factura) {
+    if (!formData.cableoperador || !formData.Num_factura) {
       toast.error('Por favor completa los campos requeridos')
       return
     }
@@ -68,7 +68,7 @@ const FacturasNew = () => {
     try {
       const dataToSend = {
         ...formData,
-        contratos: parseInt(formData.contratos),
+        cableoperador: parseInt(formData.cableoperador),
         Valor_facturado_iva: parseFloat(formData.Valor_facturado_iva) || 0,
         Valor_iva_millones: parseFloat(formData.Valor_iva_millones) || 0,
         Mes_uso: convertMonthToDate(formData.Mes_uso),
@@ -96,13 +96,13 @@ const FacturasNew = () => {
       <form onSubmit={handleSubmit} className="bg-blue-100 rounded-lg shadow-md p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <SearchableSelect
-            label="Contrato"
-            name="contratos"
-            value={formData.contratos}
+            label="Cableoperador"
+            name="cableoperador"
+            value={formData.cableoperador}
             onChange={handleChange}
-            options={contratos.filter((c) => c.estado_contrato !== 'Vencido').map((c) => ({
+            options={cableoperadores.map((c) => ({
               value: c.id.toString(),
-              label: `${c.cableoperador?.nombre_largo || c.cableoperador?.nombre} - ${c.id || 'Sin referencia'} - ${c.estado_contrato || 'Sin referencia'}`,
+              label: `${c.nombre_largo || c.nombre} - ${c.id || 'Sin referencia'} - ${c.estado || 'Sin referencia'}`,
             }))}
             required
           />

@@ -2,15 +2,25 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import contratosService from '../../services/contratosService'
+import cableoperadoresService from '../../services/cableoperadoresService'
 import Loading from '../../components/UI/Loading'
 import Button from '../../components/UI/Button'
 import { formatCurrency, formatDate } from '../../utils/formatters'
+import { ChevronDown } from 'lucide-react'
 
 const ContratosDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [contrato, setContrato] = useState(null)
+  const [openSections, setOpenSections] = useState({
+    polizaCumplimiento: false,
+    polizaRCE: false,
+    nap: false,
+    cable: false,
+    caja_empalme: false,
+    reserva: false,
+  })
 
   useEffect(() => {
     loadContrato()
@@ -20,11 +30,10 @@ const ContratosDetail = () => {
     try {
       setLoading(true)
       const data = await contratosService.getById(id)
-      
       // Si tenemos un ID de cableoperador, obtener sus detalles
       if (data.cableoperador) {
         try {
-          const cableoperadorData = await cableoperadoresService.getById(data.cableoperador)
+          const cableoperadorData = await cableoperadoresService.getById(data.cableoperador.id)
           // Combinar los datos del contrato con los detalles del cable-operador
           setContrato({
             ...data,
@@ -56,6 +65,13 @@ const ContratosDetail = () => {
         toast.error('Error al eliminar contrato')
       }
     }
+  }
+
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }))
   }
 
   if (loading) {
@@ -124,6 +140,126 @@ const ContratosDetail = () => {
             label="Tipo de Fecha de Radicación"
             value={contrato.tipo_fecha_radicacion === 'fija' ? 'Fija' : 'Dinámica'}
           />
+        </div>
+
+        {/* Campos adicionales */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <DetailField label="Tomador" value={contrato.tomador || 'N/A'} />
+          <DetailField label="Aseguradora" value={contrato.aseguradora || 'N/A'} />
+          <DetailField label="Fecha Preliquidación" value={formatDate(contrato.fecha_preliquidacion)} />
+        </div>
+
+        {/* Póliza de Cumplimiento */}
+        <div className="border rounded-lg">
+          <button
+            type="button"
+            onClick={() => toggleSection('polizaCumplimiento')}
+            className="w-full flex justify-between items-center p-3 bg-gray-50 hover:bg-gray-100"
+          >
+            <h3 className="text-lg font-semibold">Póliza de Cumplimiento</h3>
+            <ChevronDown
+              className={`transform transition-transform ${
+                openSections.polizaCumplimiento ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
+          {openSections.polizaCumplimiento && (
+            <div className="p-4 border-t">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <DetailField label="Número de Póliza" value={contrato.numero_poliza_cumplimiento || 'N/A'} />
+                <DetailField label="Inicio Vigencia" value={formatDate(contrato.inicio_vigencia_poliza_cumplimiento)} />
+                <DetailField label="Fin Vigencia" value={formatDate(contrato.fin_vigencia_poliza_cumplimiento)} />
+                <DetailField label="Vigencia Amparo" value={contrato.vigencia_amparo_poliza_cumplimiento || 'N/A'} />
+                <DetailField label="Inicio Amparo" value={formatDate(contrato.inicio_amparo_poliza_cumplimiento)} />
+                <DetailField label="Fin Amparo" value={formatDate(contrato.fin_amparo_poliza_cumplimiento)} />
+                <DetailField label="Monto Asegurado" value={contrato.monto_asegurado_poliza_cumplimiento || 'N/A'} />
+                <DetailField label="Valor Monto Asegurado" value={formatCurrency(contrato.valor_monto_asegurado_poliza_cumplimiento)} />
+                <DetailField label="Valor Asegurado" value={formatCurrency(contrato.valor_asegurado_poliza_cumplimiento)} />
+                <DetailField label="Expedición" value={formatDate(contrato.expedicion_poliza_cumplimiento)} />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Póliza de RCE */}
+        <div className="border rounded-lg">
+          <button
+            type="button"
+            onClick={() => toggleSection('polizaRCE')}
+            className="w-full flex justify-between items-center p-3 bg-gray-50 hover:bg-gray-100"
+          >
+            <h3 className="text-lg font-semibold">Póliza de RCE</h3>
+            <ChevronDown
+              className={`transform transition-transform ${
+                openSections.polizaRCE ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
+          {openSections.polizaRCE && (
+            <div className="p-4 border-t">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <DetailField label="Número de Póliza" value={contrato.numero_poliza_rce || 'N/A'} />
+                <DetailField label="Inicio Vigencia" value={formatDate(contrato.inicio_vigencia_poliza_rce)} />
+                <DetailField label="Fin Vigencia" value={formatDate(contrato.fin_vigencia_poliza_rce)} />
+                <DetailField label="Vigencia Amparo" value={contrato.vigencia_amparo_poliza_rce || 'N/A'} />
+                <DetailField label="Inicio Amparo" value={formatDate(contrato.inicio_amparo_poliza_rce)} />
+                <DetailField label="Fin Amparo" value={formatDate(contrato.fin_amparo_poliza_rce)} />
+                <DetailField label="Monto Asegurado" value={contrato.monto_asegurado_poliza_rce || 'N/A'} />
+                <DetailField label="Valor Monto Asegurado" value={formatCurrency(contrato.valor_monto_asegurado_poliza_rce)} />
+                <DetailField label="Valor Asegurado" value={formatCurrency(contrato.valor_asegurado_poliza_rce)} />
+                <DetailField label="Expedición" value={formatDate(contrato.expedicion_poliza_rce)} />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Secciones de Usos */}
+        <h3 className="text-lg font-semibold">Sección de Usos</h3>
+        <div className="space-y-2">
+          {['nap', 'cable', 'caja_empalme', 'reserva'].map((section) => (
+            <div key={section} className="border rounded-lg">
+              <button
+                type="button"
+                onClick={() => toggleSection(section)}
+                className="w-full flex justify-between items-center p-3 bg-gray-50 hover:bg-gray-100"
+              >
+                <h3 className="text-lg font-semibold capitalize">{section.replace('_', ' ')}</h3>
+                <ChevronDown
+                  className={`transform transition-transform ${
+                    openSections[section] ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              {openSections[section] && (
+                <div className="p-4 border-t">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {[
+                      'tipo8',
+                      'tipo10',
+                      'tipo12',
+                      'tipo14',
+                      'tipo15',
+                      'tipo16',
+                      'tipo20',
+                    ].map((key) => {
+                      const getLabel = (inputKey) => {
+                        const num = inputKey.replace('tipo', '')
+                        return `Altura ${num} m`
+                      }
+                      const labelText = getLabel(key)
+                      return (
+                        <DetailField
+                          key={key}
+                          label={labelText}
+                          value={contrato[section]?.[key] || 0}
+                        />
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </div>
