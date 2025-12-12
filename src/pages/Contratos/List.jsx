@@ -125,7 +125,7 @@ const ContratosList = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Contratos</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">Contratos</h1>
         <Link to="/contratos/nuevo">
           <Button variant="primary">➕ Nuevo Contrato</Button>
         </Link>
@@ -160,7 +160,7 @@ const ContratosList = () => {
       </div>
 
       {/* Filtros */}
-      <div className="mb-6 flex gap-4">
+      <div className="bg-blue-100 mb-6 flex gap-4">
         <Select
           label="Estado"
           value={filterEstado}
@@ -187,7 +187,7 @@ const ContratosList = () => {
       </div>
 
       {/* Tabla de contratos */}
-      <div className="bg-white shadow rounded-lg overflow-hidden">
+      <div className="bg-blue-100 shadow rounded-lg overflow-hidden">
         {contratos.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">No se encontraron contratos</p>
@@ -274,7 +274,7 @@ const ContratosList = () => {
 
       {/* Paginación */}
       <div className="mt-6 flex justify-between items-center">
-        <p className="text-sm text-gray-700">
+        <p className="text-2xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">
           Mostrando {contratos.length} de {totalCount} contratos
         </p>
         <div className="flex gap-2 items-center">
@@ -291,7 +291,7 @@ const ContratosList = () => {
           >
             Anterior
           </button>
-          <span className="text-sm text-gray-700">
+          <span className="text-2xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">
             Página {page} de {totalPages}
           </span>
           <button

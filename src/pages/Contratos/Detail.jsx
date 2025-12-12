@@ -100,7 +100,7 @@ const ContratosDetail = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
-        <div className="bg-secondary text-white rounded-lg p-4 mb-6">
+        <div className="text-2xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 text-2xl font-bold text-gray-800">
           <h3 className="text-2xl font-bold">
             Contrato de {contrato.cableoperador?.nombre || 'N/A'}
           </h3>

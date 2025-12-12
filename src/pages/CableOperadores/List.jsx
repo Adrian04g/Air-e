@@ -140,7 +140,7 @@ const CableOperadoresList = () => {
       </div>
 
       {/* Cards Grid */}
-      <div className="bg-blue-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="bg-gray-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {filteredCableoperadores.length === 0 ? (
           <div className="col-span-full bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
             <Cable className="w-12 h-12 text-gray-400 mx-auto mb-4" />
