@@ -51,7 +51,7 @@ const IngresoDetail = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded p-6 space-y-4">
+      <div className="bg-blue-100 rounded p-6 space-y-4">
         <p><strong>Nombre:</strong> {item.nombre}</p>
         <p><strong>Cableoperador:</strong> {item.cableoperador?.nombre || 'N/A'}</p>
         <p><strong>Departamento:</strong> {item.departamento}</p>
