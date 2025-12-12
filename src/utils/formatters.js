@@ -1,4 +1,5 @@
-import { format, parseISO } from 'date-fns'
+import { format, parseISO } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 // Formatear fecha para mostrar
 export const formatDate = (date, formatStr = 'dd/MM/yyyy') => {
@@ -57,6 +58,21 @@ export const formatMonthYear = (date) => {
     return format(dateObj, 'MM/yyyy')
   } catch (error) {
     return date
+  }
+}
+// Formatear Mes_uso para mostrar Mes Completo en español + Año (ej: Enero de 2023)
+export const formatMonthYearString = (date) => {
+  if (!date) return '';
+  try {
+    const dateObj = typeof date === 'string' ? parseISO(date) : date;
+
+    // 💡 CAMBIO CLAVE: Usar 'LLLL yyyy' para obtener el mes completo
+    // y pasar el objeto 'locale' (es)
+    return format(dateObj, 'LLL-yy', { locale: es });
+
+  } catch (error) {
+    // Si la fecha no se puede parsear, devuelve la entrada original
+    return date;
   }
 }
 

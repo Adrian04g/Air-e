@@ -8,7 +8,7 @@ import Select from '../../components/UI/Select'
 import SearchableSelect from '../../components/UI/SearchableSelect'
 import Button from '../../components/UI/Button'
 import Loading from '../../components/UI/Loading'
-import { convertMonthToDate, addOneMonth } from '../../utils/formatters'
+import { convertMonthToDate, addOneMonth, formatDateForInput } from '../../utils/formatters'
 
 const FacturasNew = () => {
   const navigate = useNavigate()
@@ -25,6 +25,10 @@ const FacturasNew = () => {
     Fecha_vencimiento: '',
     Periodo_vencimiento: '',
     estado: 'Pendiente',
+    Factura_aceptada: true,
+    Factura_CRC: false,
+    Fecha_aplicacion: '',
+    Fecha_confirmacion: '',
   })
 
   useEffect(() => {
@@ -67,12 +71,19 @@ const FacturasNew = () => {
 
     try {
       const dataToSend = {
-        ...formData,
         cableoperador: parseInt(formData.cableoperador),
+        Mes_uso: convertMonthToDate(formData.Mes_uso),
+        Fecha_facturacion: formData.Fecha_facturacion,
+        Num_factura: formData.Num_factura,
         Valor_facturado_iva: parseFloat(formData.Valor_facturado_iva) || 0,
         Valor_iva_millones: parseFloat(formData.Valor_iva_millones) || 0,
-        Mes_uso: convertMonthToDate(formData.Mes_uso),
+        Fecha_vencimiento: formData.Fecha_vencimiento,
         Periodo_vencimiento: convertMonthToDate(formData.Periodo_vencimiento),
+        estado: formData.estado,
+        Factura_aceptada: formData.Factura_aceptada,
+        Factura_CRC: formData.Factura_CRC,
+        ...(formData.Fecha_aplicacion && { Fecha_aplicacion: formData.Fecha_aplicacion }),
+        ...(formData.Fecha_confirmacion && { Fecha_confirmacion: formData.Fecha_confirmacion }),
       }
 
       await facturasService.create(dataToSend)
@@ -176,6 +187,45 @@ const FacturasNew = () => {
               { value: 'Pagada', label: 'Pagada' },
               { value: 'Anulada', label: 'Anulada' },
             ]}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="Factura_aceptada"
+              name="Factura_aceptada"
+              checked={formData.Factura_aceptada}
+              onChange={(e) => setFormData({ ...formData, Factura_aceptada: e.target.checked })}
+              className="mr-2"
+            />
+            <label htmlFor="Factura_aceptada" className="text-sm font-medium text-gray-700">Factura Aceptada</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="Factura_CRC"
+              name="Factura_CRC"
+              checked={formData.Factura_CRC}
+              onChange={(e) => setFormData({ ...formData, Factura_CRC: e.target.checked })}
+              className="mr-2"
+            />
+            <label htmlFor="Factura_CRC" className="text-sm font-medium text-gray-700">Factura CRC</label>
+          </div>
+          <Input
+            label="Fecha de Aplicación"
+            name="Fecha_aplicacion"
+            type="date"
+            value={formData.Fecha_aplicacion}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fecha de Confirmación"
+            name="Fecha_confirmacion"
+            type="date"
+            value={formData.Fecha_confirmacion}
+            onChange={handleChange}
           />
         </div>
 

@@ -16,6 +16,7 @@ const FacturasList = () => {
     search: '',
     estado: '',
   })
+  const [searchQuery, setSearchQuery] = useState('')
   const [pagination, setPagination] = useState({
     count: 0,
     next: null,
@@ -25,32 +26,38 @@ const FacturasList = () => {
 
   const location = useLocation()
 
+  const itemsPerPage = 10
+
   useEffect(() => {
     // Si la query string cambia (por ejemplo navegando desde Dashboard con ?estado=Pendiente)
     // aplicamos los filtros iniciales (estado, page) y recargamos la página correspondiente.
     const params = new URLSearchParams(location.search)
     const estadoParam = params.get('estado') || ''
+    const searchParam = params.get('search') || ''
     const pageParam = parseInt(params.get('page') || '1', 10)
 
     // Actualizar filtros y página según la query
-    setFiltros((prev) => ({ ...prev, estado: estadoParam }))
+    setFiltros((prev) => ({ ...prev, estado: estadoParam, search: searchParam }))
+    setSearchQuery(searchParam)
     setCurrentPage(isNaN(pageParam) ? 1 : pageParam)
-    // loadFacturas se ejecutará por el efecto que depende de currentPage
+    // loadFacturas se ejecutará por el efecto que depende de currentPage y filtros
   }, [location.search])
 
   useEffect(() => {
-    // Cargar facturas al montar y cuando cambie la página.
-    // Los filtros se aplican en cliente para evitar llamadas extra al API.
+    // Cargar facturas al montar y cuando cambie la página o filtros.
     loadFacturas()
-  }, [currentPage])
+  }, [currentPage, filtros])
 
   const loadFacturas = async () => {
     try {
       setLoading(true)
       const params = {}
-      if (currentPage > 1) params.page = currentPage
+      if (filtros.search) params.search = filtros.search
+      if (filtros.estado) params.estado = filtros.estado
+      params.desplazamiento = (currentPage - 1) * itemsPerPage
+      params.tamaño = itemsPerPage
 
-      // Traer solo la página solicitada. Los filtros se harán en cliente.
+      // Traer facturas filtradas desde la API
       const data = await facturasService.getAllFull(params)
       setFacturas(data.results || [])
       setPagination({
@@ -67,8 +74,10 @@ const FacturasList = () => {
 
   const handleFiltroChange = (e) => {
     const { name, value } = e.target
-    setFiltros({ ...filtros, [name]: value })
-    setCurrentPage(1)
+    if (name === 'estado') {
+      setFiltros({ ...filtros, estado: value })
+      setCurrentPage(1)
+    }
   }
 
   const handleDelete = async (id) => {
@@ -87,25 +96,7 @@ const FacturasList = () => {
     return <Loading fullScreen />
   }
 
-  const itemsPerPage = 10
   const totalPages = Math.ceil(pagination.count / itemsPerPage)
-
-  // Aplicar filtros en cliente (no hacen llamadas al API)
-  const filteredFacturas = facturas.filter((factura) => {
-    const term = (filtros.search || '').toLowerCase()
-    const cableName = (typeof factura.cableoperador === 'string')
-      ? factura.cableoperador
-      : (factura.cableoperador?.nombre || factura.cableoperador?.nombre_largo || '')
-
-    const matchesSearch = !term || (
-      String(factura.Num_factura || '').toLowerCase().includes(term) ||
-      String(cableName).toLowerCase().includes(term)
-    )
-
-    const matchesEstado = !filtros.estado || factura.estado === filtros.estado
-
-    return matchesSearch && matchesEstado
-  })
 
   const getEstadoColor = (estado) => {
     const colors = {
@@ -134,8 +125,14 @@ const FacturasList = () => {
             name="search"
             type="text"
             placeholder="Número de factura..."
-            value={filtros.search}
-            onChange={handleFiltroChange}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                setFiltros({ ...filtros, search: searchQuery })
+                setCurrentPage(1)
+              }
+            }}
           />
           <Select
             label="Estado"
@@ -185,13 +182,25 @@ const FacturasList = () => {
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
                     Estado
                   </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                    Aceptada
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                    CRC
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                    Fecha Aplicación
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                    Fecha Confirmación
+                  </th>
                   <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">
                     Acciones
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredFacturas.map((factura) => (
+                {facturas.map((factura) => (
                   <tr key={factura.id} className="border-b hover:bg-gray-50">
                     <td className="px-6 py-4 text-sm text-gray-900 font-semibold">
                       {factura.Num_factura}
@@ -217,6 +226,18 @@ const FacturasList = () => {
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getEstadoColor(factura.estado)}`}>
                         {factura.estado}
                       </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {factura.Factura_aceptada ? 'Sí' : 'No'}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {factura.Factura_CRC ? 'Sí' : 'No'}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {factura.Fecha_aplicacion ? formatDate(factura.Fecha_aplicacion) : 'N/A'}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {factura.Fecha_confirmacion ? formatDate(factura.Fecha_confirmacion) : 'N/A'}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex gap-2 justify-center">

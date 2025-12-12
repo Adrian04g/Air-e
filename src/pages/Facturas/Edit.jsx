@@ -2,22 +2,23 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import facturasService from '../../services/facturasService'
-import contratosService from '../../services/contratosService'
+import cableoperadoresService from '../../services/cableoperadoresService'
 import Input from '../../components/UI/Input'
 import Select from '../../components/UI/Select'
 import SearchableSelect from '../../components/UI/SearchableSelect'
 import Button from '../../components/UI/Button'
 import Loading from '../../components/UI/Loading'
 import { formatDateForInput, convertMonthToDate, addOneMonth, convertDateToMonth } from '../../utils/formatters'
+import { ca } from 'date-fns/locale'
 
 const FacturasEdit = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [contratos, setContratos] = useState([])
+  const [cableoperadores, setCableoperadores] = useState([])
   const [formData, setFormData] = useState({
-    contratos: '',
+    cableoperador: '',
     Mes_uso: '',
     Fecha_facturacion: '',
     Num_factura: '',
@@ -26,6 +27,10 @@ const FacturasEdit = () => {
     Fecha_vencimiento: '',
     Periodo_vencimiento: '',
     estado: 'Pendiente',
+    Factura_aceptada: true,
+    Factura_CRC: false,
+    Fecha_aplicacion: '',
+    Fecha_confirmacion: '',
   })
 
   useEffect(() => {
@@ -35,16 +40,16 @@ const FacturasEdit = () => {
   const loadData = async () => {
     try {
       setLoading(true)
-      const [facturaData, contratosData] = await Promise.all([
+      const [facturaData, cableoperadoresData] = await Promise.all([
         facturasService.getById(id),
-        contratosService.getAllFull(),
+        cableoperadoresService.getAllFull(),
       ])
 
-      const items = Array.isArray(contratosData?.results)
-        ? contratosData.results
-        : (contratosData || [])
+      const items = Array.isArray(cableoperadoresData?.results)
+        ? cableoperadoresData.results
+        : (cableoperadoresData || [])
 
-      setContratos(items)
+      setCableoperadores(items)
 
       if (!facturaData) {
         throw new Error('No se pudo cargar la factura')
@@ -52,13 +57,15 @@ const FacturasEdit = () => {
 
       setFormData({
         ...facturaData,
-        contratos: facturaData.contratos?.id?.toString() || facturaData.contratos?.toString() || '',
+        cableoperador: facturaData.cableoperador?.id?.toString() || '',
         Valor_facturado_iva: facturaData.Valor_facturado_iva?.toString() || '',
         Valor_iva_millones: facturaData.Valor_iva_millones?.toString() || '',
         Mes_uso: facturaData.Mes_uso ? facturaData.Mes_uso.slice(0, 7) : '',
         Fecha_facturacion: formatDateForInput(facturaData.Fecha_facturacion),
         Fecha_vencimiento: formatDateForInput(facturaData.Fecha_vencimiento),
         Periodo_vencimiento: formatDateForInput(facturaData.Periodo_vencimiento),
+        Fecha_aplicacion: formatDateForInput(facturaData.Fecha_aplicacion),
+        Fecha_confirmacion: formatDateForInput(facturaData.Fecha_confirmacion),
       })
     } catch (error) {
       toast.error('Error al cargar factura')
@@ -83,7 +90,7 @@ const FacturasEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!formData.contratos || !formData.Num_factura) {
+    if (!formData.cableoperador || !formData.Num_factura) {
       toast.error('Por favor completa los campos requeridos')
       return
     }
@@ -92,12 +99,19 @@ const FacturasEdit = () => {
 
     try {
       const dataToSend = {
-        ...formData,
-        contratos: parseInt(formData.contratos),
+        cableoperador: parseInt(formData.cableoperador),
+        Mes_uso: convertMonthToDate(formData.Mes_uso),
+        Fecha_facturacion: formData.Fecha_facturacion,
+        Num_factura: formData.Num_factura,
         Valor_facturado_iva: parseFloat(formData.Valor_facturado_iva) || 0,
         Valor_iva_millones: parseFloat(formData.Valor_iva_millones) || 0,
-        Mes_uso: convertMonthToDate(formData.Mes_uso),
+        Fecha_vencimiento: formData.Fecha_vencimiento,
         Periodo_vencimiento: formData.Periodo_vencimiento,
+        estado: formData.estado,
+        Factura_aceptada: formData.Factura_aceptada,
+        Factura_CRC: formData.Factura_CRC,
+        ...(formData.Fecha_aplicacion && { Fecha_aplicacion: formData.Fecha_aplicacion }),
+        ...(formData.Fecha_confirmacion && { Fecha_confirmacion: formData.Fecha_confirmacion }),
       }
 
       await facturasService.update(id, dataToSend)
@@ -120,13 +134,13 @@ const FacturasEdit = () => {
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <SearchableSelect
-            label="Contrato"
-            name="contratos"
-            value={formData.contratos}
+            label="Cableoperador"
+            name="cableoperador"
+            value={formData.cableoperador}
             onChange={handleChange}
-            options={contratos.map((c) => ({
+            options={cableoperadores.map((c) => ({
               value: c.id.toString(),
-              label: `${c.cableoperador?.nombre_largo || c.cableoperador?.nombre} - ${c.id || 'Sin referencia'}`,
+              label: `${c.nombre_largo || c.nombre} - ${c.id || 'Sin referencia'}`,
             }))}
             required
           />
@@ -200,6 +214,45 @@ const FacturasEdit = () => {
               { value: 'Pagada', label: 'Pagada' },
               { value: 'Anulada', label: 'Anulada' },
             ]}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="Factura_aceptada"
+              name="Factura_aceptada"
+              checked={formData.Factura_aceptada}
+              onChange={(e) => setFormData({ ...formData, Factura_aceptada: e.target.checked })}
+              className="mr-2"
+            />
+            <label htmlFor="Factura_aceptada" className="text-sm font-medium text-gray-700">Factura Aceptada</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="Factura_CRC"
+              name="Factura_CRC"
+              checked={formData.Factura_CRC}
+              onChange={(e) => setFormData({ ...formData, Factura_CRC: e.target.checked })}
+              className="mr-2"
+            />
+            <label htmlFor="Factura_CRC" className="text-sm font-medium text-gray-700">Factura CRC</label>
+          </div>
+          <Input
+            label="Fecha de Aplicación"
+            name="Fecha_aplicacion"
+            type="date"
+            value={formData.Fecha_aplicacion}
+            onChange={handleChange}
+          />
+          <Input
+            label="Fecha de Confirmación"
+            name="Fecha_confirmacion"
+            type="date"
+            value={formData.Fecha_confirmacion}
+            onChange={handleChange}
           />
         </div>
 

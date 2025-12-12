@@ -6,7 +6,7 @@ import Loading from '../../components/UI/Loading'
 import Button from '../../components/UI/Button'
 import Input from '../../components/UI/Input'
 import Modal from '../../components/UI/Modal'
-import { formatPhone, formatNumber, formatDate, formatMonthYear } from '../../utils/formatters'
+import { formatPhone, formatNumber, formatDate, formatMonthYear, formatMonthYearString } from '../../utils/formatters'
 
 const FacturasDetail = () => {
   const { id } = useParams()
@@ -160,7 +160,7 @@ const FacturasDetail = () => {
       <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
         {/* Encabezado */}
         <div className="bg-secondary text-white rounded-lg p-4 mb-6">
-          <h3 className="bg-black text-2xl font-bold text-center">Cableoperador {factura.cableoperador?.nombre || 'N/A'}</h3>
+          <h3 className="bg-black text-2xl font-bold text-center"> {factura.cableoperador?.nombre_largo || 'N/A'}</h3>
           <p className="text-center mt-2 opacity-90">
             Factura N° {factura.Num_factura}
           
@@ -169,17 +169,21 @@ const FacturasDetail = () => {
 
         {/* Información de la factura */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <DetailField label="Mes de Uso" value={formatMonthYear(factura.Mes_uso)} />
+          <DetailField label="Mes de Uso" value={formatMonthYearString(factura.Mes_uso)} />
           <DetailField label="Fecha Facturación" value={formatDate(factura.Fecha_facturacion)} />
           <DetailField label="Fecha Vencimiento" value={formatDate(factura.Fecha_vencimiento)} />
-          <DetailField label="Período Vencimiento" value={formatMonthYear(factura.Periodo_vencimiento)} />
+          <DetailField label="Período Vencimiento" value={formatMonthYearString(factura.Periodo_vencimiento)} />
           <DetailField label="Valor Facturado (IVA)" value={`$${formatNumber(factura.Valor_facturado_iva)}`} />
-          <DetailField label="Valor IVA (millones)" value={`$${formatNumber(factura.Valor_iva_millones)}`} />
+
           <DetailField label="Estado" value={
             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getEstadoColor(factura.estado)}`}>
               {factura.estado}
             </span>
           } />
+          <DetailField label="Factura Aceptada" value={factura.Factura_aceptada ? 'Sí' : 'No'} />
+          <DetailField label="Factura CRC" value={factura.Factura_CRC ? 'Sí' : 'No'} />
+          <DetailField label="Fecha de Aplicación" value={factura.Fecha_aplicacion ? formatDate(factura.Fecha_aplicacion) : 'N/A'} />
+          <DetailField label="Fecha de Confirmación" value={factura.Fecha_confirmacion ? formatDate(factura.Fecha_confirmacion) : 'N/A'} />
         </div>
 
         {/* Resumen de pagos */}

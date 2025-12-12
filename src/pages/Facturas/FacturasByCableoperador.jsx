@@ -224,6 +224,18 @@ const FacturasByCableoperador = () => {
 									<th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
 										Estado
 									</th>
+									<th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+										Aceptada
+									</th>
+									<th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+										CRC
+									</th>
+									<th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+										Fecha Aplicación
+									</th>
+									<th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+										Fecha Confirmación
+									</th>
 									<th className="px-6 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
 										Acciones
 									</th>
@@ -251,6 +263,18 @@ const FacturasByCableoperador = () => {
 											<span className={`px-3 py-1 rounded-full text-xs font-semibold ${getEstadoColor(factura.estado)}`}>
 												{factura.estado}
 											</span>
+										</td>
+										<td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
+											{factura.Factura_aceptada ? 'Sí' : 'No'}
+										</td>
+										<td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
+											{factura.Factura_CRC ? 'Sí' : 'No'}
+										</td>
+										<td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
+											{factura.Fecha_aplicacion ? formatDate(factura.Fecha_aplicacion) : 'N/A'}
+										</td>
+										<td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
+											{factura.Fecha_confirmacion ? formatDate(factura.Fecha_confirmacion) : 'N/A'}
 										</td>
 										<td className="px-6 py-4 text-center">
 											<div className="flex gap-2 justify-center">
